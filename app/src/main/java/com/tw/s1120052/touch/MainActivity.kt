@@ -52,12 +52,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             TouchTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   /* Greeting(
+                    /*
+                    Greeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
-
-                    */
+                     */
                     Animation(m=Modifier.padding(innerPadding))
                 }
             }
@@ -66,22 +66,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Animation(m : Modifier) {
-    var appear by remember { mutableStateOf(true) }  //背景出現
-    var expanded by remember { mutableStateOf(true) }  //背景延展
+fun Animation(m:Modifier) {
+    var appear by remember { mutableStateOf(true) }//背景出現
+    var expanded by remember { mutableStateOf(true) }//背景延展
     var fly by remember { mutableStateOf(false) }  //火箭升空
 
-    //位移動畫
-    val rocketOffset by animateOffsetAsState(
-        if (fly) Offset(200f, -50f) else Offset(200f, 400f),
-        animationSpec = tween(2000)
-    )
-
-    //大小動畫
-    val rocketSize by animateDpAsState(
-        if (fly) 75.dp else 150.dp,
-        animationSpec = tween(2000)
-    )
 
     //角度動畫
     val buttonAngle by animateFloatAsState(
@@ -93,75 +82,78 @@ fun Animation(m : Modifier) {
         if (appear) Color.Transparent else Color.Green,
         animationSpec = tween(2000, 500)
     )
+    //大小動畫
+    val rocketSize by animateDpAsState(
+        if (fly) 75.dp else 150.dp,
+        animationSpec = tween(2000)
+    )
+    //位移動畫
+    val rocketOffset by animateOffsetAsState(
+        if (fly) Offset(200f, -50f) else Offset(200f, 400f),
+        animationSpec = tween(2000)
+    )
 
-    Column(Modifier.background(backgroundColor)) {
 
 
-        Column {
-            Button(
-                onClick = { appear = !appear },
-                modifier = Modifier.rotate(buttonAngle)
-
-            ) {
-                if (appear) Text(text = "星空背景圖消失")
-                else Text(text = "星空背景圖出現")
-            }
-
-            AnimatedVisibility(
-                visible = appear,
-                enter = fadeIn(
-                    initialAlpha = 0.1f,
-                    animationSpec = tween(durationMillis = 3000)
-                )
-                        + slideInHorizontally(
-                    animationSpec = tween(durationMillis = 3000)
-                ) { fullWidth ->
-                    fullWidth / 3
-                },
-
-                exit = fadeOut(
-                    animationSpec = tween(durationMillis = 5000)
-                )
-                        + slideOutHorizontally(
-                    animationSpec = tween(durationMillis = 5000)
-                ) { fullWidth ->
-                    fullWidth / 3
-                }
+    Column (Modifier.background(backgroundColor)) {
+        Button(
+            onClick = { appear = !appear },
+            modifier = Modifier.rotate(buttonAngle),
 
 
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.rocket),
-                    contentDescription = "火箭",
-                    modifier = Modifier
-                        .size(rocketSize)
-                        .offset(rocketOffset.x.dp, rocketOffset.y.dp)
-
-                        .clickable(
-                        ) {
-                            fly = !fly
-                        }
-                )
-
-                Image(
-                    painter = painterResource(id = R.drawable.sky),
-                    contentDescription = "星空背景圖",
-                    modifier = Modifier
-                        .animateContentSize()
-                        .fillMaxWidth()
-                        .height(if (expanded) 600.dp else 400.dp)
-                        .clickable(
-                        ) {
-                            expanded = !expanded
-                        }
-
-
-                )
-            }
-
-
+            if (appear) Text(text = "星空背景圖消失")
+            else Text(text = "星空背景圖出現")
         }
-    }
-}
 
+        AnimatedVisibility(
+            visible = appear,
+            enter = fadeIn(
+                initialAlpha = 0.1f,
+                animationSpec = tween(durationMillis = 3000))
+                    + slideInHorizontally(
+                animationSpec = tween(durationMillis = 3000)) { fullWidth ->
+                fullWidth / 3
+            },
+
+            exit = fadeOut(
+                animationSpec = tween(durationMillis = 5000))
+                    + slideOutHorizontally(
+                animationSpec = tween(durationMillis = 5000)) { fullWidth ->
+                fullWidth / 3
+            }
+
+
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.rocket),
+                contentDescription = "火箭",
+                modifier = Modifier
+                    .size(rocketSize)
+                    .offset(rocketOffset.x.dp, rocketOffset.y.dp)
+                    .clickable(
+                    ) {
+                        fly = !fly
+                    }
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.sky),
+                contentDescription = "星空背景圖",
+                modifier = Modifier
+                    .animateContentSize()
+                    .fillMaxWidth()
+                    .height(if (expanded) 600.dp else 400.dp)
+                    .clickable(
+                    ) {
+                        expanded = !expanded
+                    }
+
+            )
+        }
+
+
+    }
+
+}
 
