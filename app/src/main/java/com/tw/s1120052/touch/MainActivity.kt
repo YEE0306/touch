@@ -111,10 +111,10 @@ fun Animation(m : Modifier) {
                 visible = appear,
                 enter = fadeIn(
                     initialAlpha = 0.1f,
-                    animationSpec = tween(durationMillis = 5000)
+                    animationSpec = tween(durationMillis = 3000)
                 )
                         + slideInHorizontally(
-                    animationSpec = tween(durationMillis = 5000)
+                    animationSpec = tween(durationMillis = 3000)
                 ) { fullWidth ->
                     fullWidth / 3
                 },
